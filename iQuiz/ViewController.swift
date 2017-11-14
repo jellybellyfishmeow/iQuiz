@@ -10,11 +10,21 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
    
-    
+    var qNum : Int = -1
     let tableCells = ["Mathematics", "Marvel Super Heroes", "Science"]
     let desc = ["numbers and what not", "archnemesis of DC", "BILL NYE THE SCIENCE GUY"]
     let images = ["math", "marvel", "science"]
-    
+    let allQs : [(topic : String, qs : [(q : String, a : Int, answers : [String])])] =
+        [(topic : "Mathematics", qs : [(q : "1 + 1 =?", a : 1, answers : ["1", "2", "3", "4"]),
+                                       (q : "1 + 2 =?", a : 2, answers : ["5", "4", "3", "1"]),
+                                       (q : "1 + 9 =?", a : 3, answers : ["2", "5", "3", "10"]),
+                                       (q : "1 + 4 =?", a : 0, answers : ["5", "2", "12", "3"])]),
+         (topic : "Marvel", qs : [(q : "marvel1", a : 0, answers : ["answer", "o2", "o3", "o4"]),
+                            (q : "marvel2", a : 1, answers : ["o1", "answer", "o3", "o4"]),
+                            (q : "marvel3", a : 2, answers : ["o1", "o2", "answer", "o4"])]),
+         (topic : "Science", qs : [(q : "", a : 0, answers : ["answer", "o2", "o3", "o4"]),
+                            (q : "science1", a : 1, answers : ["o1", "answer", "o3", "o4"]),
+                            (q : "science2", a : 3, answers : ["o1", "o2", "o3", "answer"])])]
     
     @IBOutlet var tableview: UITableView!
     
@@ -37,7 +47,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        qNum = indexPath.row
+        performSegue(withIdentifier: "toQuestion", sender: self)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let qs: QuestionViewController = segue.destination as! QuestionViewController
+        qs.t = qNum
+        qs.q = allQs[qNum].qs[0].q
+        qs.options = allQs[qNum].qs[0].answers
+        qs.correct = allQs[qNum].qs[0].a
+        qs.allQs = allQs
+        qs.num = 0
+    }
+
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
