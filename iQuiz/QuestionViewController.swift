@@ -14,10 +14,13 @@ class QuestionViewController: UIViewController {
     var q : String = ""
     var correct : Int = -1
     var options : [String] = []
-    var allQs : [(topic : String, qs : [(q : String, a : Int, answers : [String])])]! = []
+    
     var chosen : Int = -1
     var num : Int = -1
     var score : Int = 0
+    var qs : [String] = [] // list of qs
+    var answers : [[String]] = [] // list of answers for each
+    var correctA : [Int]  = [] // list of correct answers
     
     @IBOutlet weak var topic: UILabel!
     @IBOutlet weak var question: UILabel!
@@ -29,7 +32,7 @@ class QuestionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        topic.text = allQs[t].topic
+        //topic.text = allQs[t].topic
         question.text = q
         o1.setTitle(options[0], for: UIControlState.normal)
         o2.setTitle(options[1], for: UIControlState.normal)
@@ -94,9 +97,12 @@ class QuestionViewController: UIViewController {
             answer.score = self.score
             answer.correctAnswer = self.options[correct]
             answer.isCorrect = (chosen == correct)
-            answer.allQs = self.allQs
             answer.num = self.num + 1
             answer.t = self.t
+            
+            answer.qs = self.qs
+            answer.answers = self.answers
+            answer.correctA = self.correctA
         }
     }
 

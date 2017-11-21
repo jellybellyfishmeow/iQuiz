@@ -18,9 +18,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <button key="tableHeaderView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="C0J-Gh-kGf">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Settings"/>
+                            <connections>
+                                <action selector="settingsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OXe-ND-8UN"/>
+                            </connections>
+                        </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="70" id="0z8-oJ-h5c">
-                                <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0z8-oJ-h5c" id="mIs-Bd-EjH">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
@@ -34,21 +42,7 @@
                             <outlet property="delegate" destination="BYZ-38-t0r" id="9BP-Ak-N6f"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="lCu-jW-nwg">
-                        <barButtonItem key="leftBarButtonItem" title="Setting" style="plain" id="o9Q-NQ-eKV">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="IuD-5X-eHt" userLabel="Setting">
-                                <rect key="frame" x="16" y="7" width="49" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Setting"/>
-                                <connections>
-                                    <action selector="alertSetting:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L6f-bf-MrB"/>
-                                </connections>
-                            </button>
-                            <connections>
-                                <action selector="alertSetting:" destination="BYZ-38-t0r" id="RUd-Tg-CQn"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="lCu-jW-nwg"/>
                     <connections>
                         <outlet property="tableview" destination="hFj-ad-lO3" id="Tmc-Ho-e3E"/>
                         <segue destination="5fH-31-blC" kind="show" identifier="toQuestion" id="LON-z6-FOM"/>
@@ -67,11 +61,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rp4-Pr-cOc">
-                                <rect key="frame" x="112" y="224" width="150" height="40"/>
+                                <rect key="frame" x="16" y="224" width="343" height="40"/>
                                 <color key="backgroundColor" red="0.53333333333333333" green="0.86274509803921573" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="dBm-ea-SIK"/>
-                                    <constraint firstAttribute="width" secondItem="rp4-Pr-cOc" secondAttribute="height" multiplier="15:4" id="e6n-8k-bYF"/>
+                                    <constraint firstAttribute="width" secondItem="rp4-Pr-cOc" secondAttribute="height" multiplier="15:4" constant="193" id="e6n-8k-bYF"/>
                                 </constraints>
                                 <state key="normal" title="o1">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -81,11 +75,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="act-Tt-ShB">
-                                <rect key="frame" x="112" y="279" width="150" height="40"/>
+                                <rect key="frame" x="16" y="279" width="343" height="40"/>
                                 <color key="backgroundColor" red="0.53333333333333333" green="0.86274509803921573" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="8PE-Rb-tXh"/>
-                                    <constraint firstAttribute="width" secondItem="act-Tt-ShB" secondAttribute="height" multiplier="15:4" id="AeW-Ec-Ppw"/>
+                                    <constraint firstAttribute="width" secondItem="act-Tt-ShB" secondAttribute="height" multiplier="15:4" constant="193" id="AeW-Ec-Ppw"/>
                                 </constraints>
                                 <state key="normal" title="o2">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -95,11 +89,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NIo-ZX-yJb">
-                                <rect key="frame" x="112" y="334" width="150" height="40"/>
+                                <rect key="frame" x="16" y="334" width="343" height="40"/>
                                 <color key="backgroundColor" red="0.53333333333333333" green="0.86274509803921573" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="DKU-eh-qWn"/>
-                                    <constraint firstAttribute="width" secondItem="NIo-ZX-yJb" secondAttribute="height" multiplier="15:4" id="ygU-05-Q3H"/>
+                                    <constraint firstAttribute="width" secondItem="NIo-ZX-yJb" secondAttribute="height" multiplier="15:4" constant="193" id="ygU-05-Q3H"/>
                                 </constraints>
                                 <state key="normal" title="o3">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -109,10 +103,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fCF-7b-Ia2">
-                                <rect key="frame" x="112" y="389" width="150" height="40"/>
+                                <rect key="frame" x="16" y="389" width="343" height="40"/>
                                 <color key="backgroundColor" red="0.53333333333333333" green="0.86274509803921573" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="fCF-7b-Ia2" secondAttribute="height" multiplier="15:4" id="YgS-kc-Na1"/>
+                                    <constraint firstAttribute="width" secondItem="fCF-7b-Ia2" secondAttribute="height" multiplier="15:4" constant="193" id="YgS-kc-Na1"/>
                                     <constraint firstAttribute="height" constant="40" id="h6c-43-30C"/>
                                 </constraints>
                                 <state key="normal" title="o4">
@@ -195,7 +189,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9xe-XD-oPK" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <swipeGestureRecognizer direction="right" id="jCY-ky-cxZ"/>
             </objects>
-            <point key="canvasLocation" x="1014" y="34"/>
+            <point key="canvasLocation" x="1013.6" y="33.733133433283363"/>
         </scene>
         <!--Answer-->
         <scene sceneID="7Cb-Wl-5dM">
@@ -339,8 +333,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="S5G-fm-STd"/>
-        <segue reference="bWm-4h-w2A"/>
+        <segue reference="LON-z6-FOM"/>
         <segue reference="Hh0-De-Wfy"/>
     </inferredMetricsTieBreakers>
 </document>

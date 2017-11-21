@@ -12,11 +12,14 @@ class AnswerViewController: UIViewController {
 
     var score : Int = 0
     var isCorrect : Bool = false
-    var allQs : [(topic : String, qs : [(q : String, a : Int, answers : [String])])]! = []
     var q : String = ""
     var correctAnswer : String = ""
     var num : Int = -1 //now accurate
     var t : Int = -1
+    
+    var qs : [String] = [] // list of qs
+    var answers : [[String]] = [] // list of answers for each
+    var correctA : [Int]  = [] // list of correct answers
     
     @IBOutlet weak var question: UILabel!
     @IBOutlet weak var correct: UILabel!
@@ -50,7 +53,7 @@ class AnswerViewController: UIViewController {
     
     
     @IBAction func clickNext(_ sender: Any) {
-        if (num == allQs[t].qs.count) {
+        if (num == qs.count) {
             performSegue(withIdentifier: "toFinish", sender: nil)
         } else {
             performSegue(withIdentifier: "moreQ", sender: nil)
@@ -62,17 +65,18 @@ class AnswerViewController: UIViewController {
         if segue.identifier == "moreQ" {
             let qs: QuestionViewController = segue.destination as! QuestionViewController
             qs.t = self.t
-            qs.q = allQs[t].qs[num].q
-            qs.options = allQs[t].qs[num].answers
+            qs.q = self.qs[num]
+            qs.options = answers[num]
             qs.score = self.score
-            qs.correct = allQs[t].qs[num].a
-            qs.allQs = self.allQs
+            qs.correct = correctA[num]
+            qs.correctA = correctA
+            qs.qs = self.qs
+            qs.answers = self.answers
             qs.num = self.num
         } else if segue.identifier == "toFinish" {
             let f: FinishViewController = segue.destination as! FinishViewController
             f.score = self.score
-            f.total = allQs[t].qs.count
-            f.allQs = self.allQs
+            f.total = self.qs.count
         } else {
             let q: ViewController = segue.destination as! ViewController
 

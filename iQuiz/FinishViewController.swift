@@ -12,7 +12,6 @@ class FinishViewController: UIViewController {
 
     var score : Int = 0
     var total : Int = 0
-    var allQs : [(topic : String, qs : [(q : String, a : Int, answers : [String])])]! = []
 
     @IBOutlet weak var message: UILabel!
     @IBOutlet weak var scoreDisplay: UILabel!

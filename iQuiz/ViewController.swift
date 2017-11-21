@@ -11,55 +11,30 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
    
     var qNum : Int = -1
-    let tableCells = ["Mathematics", "Marvel Super Heroes", "Science"]
-    let desc = ["numbers and what not", "archnemesis of DC", "BILL NYE THE SCIENCE GUY"]
-    let images = ["math", "marvel", "science"]
-    let allQs : [(topic : String, qs : [(q : String, a : Int, answers : [String])])] =
-        [(topic : "Mathematics", qs : [(q : "1 + 1 =?", a : 1, answers : ["1", "2", "3", "4"]),
-                                       (q : "1 + 2 =?", a : 2, answers : ["5", "4", "3", "1"]),
-                                       (q : "1 + 9 =?", a : 3, answers : ["2", "5", "3", "10"]),
-                                       (q : "1 + 4 =?", a : 0, answers : ["5", "2", "12", "3"])]),
-         (topic : "Marvel", qs : [(q : "marvel1", a : 0, answers : ["answer", "o2", "o3", "o4"]),
-                            (q : "marvel2", a : 1, answers : ["o1", "answer", "o3", "o4"]),
-                            (q : "marvel3", a : 2, answers : ["o1", "o2", "answer", "o4"])]),
-         (topic : "Science", qs : [(q : "", a : 0, answers : ["answer", "o2", "o3", "o4"]),
-                            (q : "science1", a : 1, answers : ["o1", "answer", "o3", "o4"]),
-                            (q : "science2", a : 3, answers : ["o1", "o2", "o3", "answer"])])]
-    
+    var jsonData : NSArray = [""]
+    let images = ["science", "marvel", "math"]
+    var url : String = "https://tednewardsandbox.site44.com/questions.json"
+    let f = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("default.txt")
+    var qs : [String] = []
+    var answers : [[String]] = []
+    var correct : [Int]  = []
     @IBOutlet var tableview: UITableView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
     
-    func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        tableview.reloadData()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    @IBAction func alertSetting(_ sender: Any) {
-        let alert = UIAlertController(title: "Setting", message: "Settings go here", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         qNum = indexPath.row
+        let subj = (jsonData[indexPath.row] as! [String : Any])["questions"] as! [Any]
+        for q in subj {
+            let parseQ = q as! [String : Any]
+            qs.append(parseQ["text"] as! String)
+            var thisOptionAnswers : [String] = []
+            for eachOptionAnswer in (parseQ["answers"] as! [String]) {
+                thisOptionAnswers.append(eachOptionAnswer)
+            }
+            answers.append(thisOptionAnswers)
+            correct.append(Int(parseQ["answer"] as! String)! - 1)
+        }
         performSegue(withIdentifier: "toQuestion", sender: self)
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let qs: QuestionViewController = segue.destination as! QuestionViewController
-        qs.t = qNum
-        qs.q = allQs[qNum].qs[0].q
-        qs.options = allQs[qNum].qs[0].answers
-        qs.correct = allQs[qNum].qs[0].a
-        qs.allQs = allQs
-        qs.num = 0
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -72,13 +47,82 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "cell")
-        cell.textLabel!.text = tableCells[indexPath.row]
-        cell.detailTextLabel?.text = desc[indexPath.row]
-        cell.detailTextLabel?.numberOfLines = 2;
-
+        cell.textLabel!.text = (jsonData[indexPath.row] as! [String : Any])["title"] as? String
+        cell.detailTextLabel?.text = (jsonData[indexPath.row] as! [String : Any])["desc"] as? String
         cell.imageView?.image = UIImage(named: (images[indexPath.row] + ".png"))
-
         return cell
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        getJSON(url)
+        //NSLog(String(describing: self.jsonData))
+        // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    // HERE'S JSON STUFF
+    func getJSON(_ url : String) {
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "GET"
+        let session = URLSession.shared
+        session.dataTask(with: request) { data, res, err in
+            let r = res as! HTTPURLResponse
+            NSLog("Response code: %ld", r.statusCode);
+            if (r.statusCode == 200) {
+                self.jsonData = try! JSONSerialization.jsonObject(with: data!, options: []) as! NSArray
+                do {
+                    try String(data: data!, encoding: .utf8)?.write(to: self.f, atomically: true, encoding: String.Encoding.utf8)
+                } catch {
+                    NSLog(error.localizedDescription + " write")
+                }
+                //NSLog(String(describing: self.jsonData))
+                //NSLog(self.jsonData.description)
+            } else {
+                do {
+                    let t = try String(contentsOf: self.f, encoding: .utf8)
+                    let data = t.data(using: String.Encoding.utf8)!
+                    self.jsonData = try! JSONSerialization.jsonObject(with: data, options: []) as! NSArray
+                } catch {
+                    NSLog(error.localizedDescription + "read")
+                }
+            }
+        }.resume()
+        self.tableview.reloadData()
+    }
+    
+    func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    @IBAction func settingsPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "Setting", message: "enter alternate URL", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addTextField { (textField : UITextField!) -> Void in
+            textField.placeholder = "please enter new URL"
+        }
+        let newURL = UIAlertAction(title: "Check now", style: .default, handler: {
+            refresh -> Void in
+            self.url = alert.textFields![0].text!
+            self.getJSON(self.url)
+        })
+        alert.addAction(newURL)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: {_ in NSLog("cancel")}))
+        self.present(alert, animated:true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let qs: QuestionViewController = segue.destination as! QuestionViewController
+        qs.t = qNum
+        qs.q = self.qs[0]
+        qs.options = answers[0]
+        qs.correct = correct[0]
+        qs.qs = self.qs
+        qs.answers = self.answers
+        qs.correctA = self.correct
+        qs.num = 0
     }
    
 }
